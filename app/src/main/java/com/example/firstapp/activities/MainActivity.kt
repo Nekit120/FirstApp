@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityMainBinding
+import com.example.firstapp.fragments.FragmentManager
+import com.example.firstapp.fragments.NoteFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var bind : ActivityMainBinding
@@ -16,17 +18,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setBottomNavListener() = with(bind){
-       navView.setOnItemSelectedListener {
+    private fun setBottomNavListener() {
+       bind.navView.setOnItemSelectedListener {
 
            when(it.itemId){
                R.id.notes -> {
-                   val toast = Toast.makeText(applicationContext,"notes",Toast.LENGTH_SHORT)
-                   toast.show()
+                   FragmentManager.setFragment(NoteFragment.newInstance(),this)
                }
 
                R.id.newItem -> {
-                   val toast = Toast.makeText(applicationContext, "newItem",Toast.LENGTH_SHORT)
+                   val toast = Toast.makeText(applicationContext,"newItem",Toast.LENGTH_SHORT)
                    toast.show()
                }
 
