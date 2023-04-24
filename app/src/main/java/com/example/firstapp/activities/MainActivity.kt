@@ -27,8 +27,7 @@ class MainActivity : AppCompatActivity() {
                }
 
                R.id.newItem -> {
-                   val toast = Toast.makeText(applicationContext,"newItem",Toast.LENGTH_SHORT)
-                   toast.show()
+                FragmentManager.currentFrag?.onClickNew()
                }
 
                R.id.settings -> {

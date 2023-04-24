@@ -5,4 +5,7 @@
     <string name="notes">Заметки</string>
     <string name="shop_list">Список Покупок</string>
     <string name="new_item">Новый</string>
+    <string name="hello_blank_fragment">Привет бланк фрагмент</string>
+    <string name="title_hint">Заголовок</string>
+    <string name="description_hint">Содержание</string>
 </resources>
