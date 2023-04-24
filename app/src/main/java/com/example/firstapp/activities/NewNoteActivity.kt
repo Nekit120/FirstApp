@@ -2,11 +2,15 @@ package com.example.firstapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.Menu
 import android.view.MenuItem
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityNewNoteBinding
+import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.fragments.NoteFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NewNoteActivity : AppCompatActivity() {
 
@@ -35,13 +39,27 @@ class NewNoteActivity : AppCompatActivity() {
 // получение результата
     private fun setMainResult(){
         val i = intent.apply {
-            putExtra(NoteFragment.TITLE_KEY,bind.edTitle.text.toString())
-            putExtra(NoteFragment.DESCRIPTION_KEY,bind.edDescription.text.toString())
+         putExtra(NoteFragment.NEW_NOTE_KEY,createNewNote())
         }
     setResult(RESULT_OK,i)
     finish()
     }
 
+    private fun createNewNote(): NoteItem{
+        return NoteItem(
+            null,
+            bind.edTitle.text.toString(),
+            bind.edDescription.text.toString(),
+            getCurrentTime(),
+            ""
+
+        )
+    }
+
+    private fun getCurrentTime(): String{
+        val formatter = SimpleDateFormat("hh:mm:ss - yyyy/MM/dd", Locale.getDefault())
+        return formatter.format(Calendar.getInstance().time)
+    }
     private fun actionBarSettings(){
         val ab = supportActionBar
         ab?.setDisplayHomeAsUpEnabled(true)

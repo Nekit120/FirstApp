@@ -12,17 +12,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstapp.R
 import com.example.firstapp.activities.MainApp
 import com.example.firstapp.activities.NewNoteActivity
 import com.example.firstapp.databinding.FragmentNoteBinding
 import com.example.firstapp.db.MainDataBase
 import com.example.firstapp.db.MainViewModel
+import com.example.firstapp.db.NoteAdapter
+import com.example.firstapp.entities.NoteItem
 
 
 class NoteFragment : BaseFragment() {
     private lateinit var bind: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
+    private lateinit var adapter: NoteAdapter
     private val mainViewModel : MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
@@ -44,19 +48,34 @@ class NoteFragment : BaseFragment() {
         return bind.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+        initRcView()
+        observer()
+    }
+    private fun initRcView() = with(bind){
+     rcViewNote.layoutManager = LinearLayoutManager(activity)
+        adapter = NoteAdapter()
+        rcViewNote.adapter=adapter
+    }
+    private fun observer(){
+        mainViewModel.allNotes.observe(viewLifecycleOwner,{
+            adapter.submitList(it)
+        })
+    }
     //получение результата с активити
     private fun onEditResult(){
         editLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK)
             {
-                bind.TeVe.text=it.data?.getStringExtra(TITLE_KEY)
+                mainViewModel.insertNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem )
             }
         }
     }
     companion object {
-        const val TITLE_KEY = "title_key"
-        const val DESCRIPTION_KEY = "desk_key"
+        const val NEW_NOTE_KEY = "note_key"
         @JvmStatic
         fun newInstance() = NoteFragment()
 

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constai"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#98FDE1D6"
     tools:context=".fragments.NoteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/TeVe"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcViewNote"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:layout_height="740dp" />
 </FrameLayout>
