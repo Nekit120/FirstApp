@@ -23,7 +23,7 @@ import com.example.firstapp.db.NoteAdapter
 import com.example.firstapp.entities.NoteItem
 
 
-class NoteFragment : BaseFragment() {
+class NoteFragment : BaseFragment(),NoteAdapter.Listener {
     private lateinit var bind: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
     private lateinit var adapter: NoteAdapter
@@ -56,7 +56,7 @@ class NoteFragment : BaseFragment() {
     }
     private fun initRcView() = with(bind){
      rcViewNote.layoutManager = LinearLayoutManager(activity)
-        adapter = NoteAdapter()
+        adapter = NoteAdapter(listener = this@NoteFragment)
         rcViewNote.adapter=adapter
     }
     private fun observer(){
@@ -74,10 +74,15 @@ class NoteFragment : BaseFragment() {
             }
         }
     }
+
+
     companion object {
         const val NEW_NOTE_KEY = "note_key"
         @JvmStatic
         fun newInstance() = NoteFragment()
 
+    }
+    override fun deleteItem(id: Int) {
+        mainViewModel.deleteNote(id)
     }
 }
