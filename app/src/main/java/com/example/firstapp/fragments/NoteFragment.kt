@@ -70,19 +70,32 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
             ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK)
             {
+                val editState = it.data?.getStringExtra(EDIT_STATE_KEY)
+                if(editState == "new"){
                 mainViewModel.insertNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem )
+                } else{ mainViewModel.updateNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem)}
             }
         }
+    }
+
+    override fun deleteItem(id: Int) {
+        mainViewModel.deleteNote(id)
+    }
+
+    override fun onClickItem(note: NoteItem) {
+        val intent = Intent(activity,NewNoteActivity::class.java).apply {
+            putExtra(NEW_NOTE_KEY,note)
+        }
+        editLauncher.launch(intent)
     }
 
 
     companion object {
         const val NEW_NOTE_KEY = "note_key"
+        const val EDIT_STATE_KEY = "edit_key"
         @JvmStatic
         fun newInstance() = NoteFragment()
 
     }
-    override fun deleteItem(id: Int) {
-        mainViewModel.deleteNote(id)
-    }
+
 }
