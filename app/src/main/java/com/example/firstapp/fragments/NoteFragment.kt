@@ -27,9 +27,12 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
     private lateinit var bind: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
     private lateinit var adapter: NoteAdapter
+
+//Создание бд
     private val mainViewModel : MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
+//переход на активити, при создании новой заметки
     override fun onClickNew() {
      editLauncher.launch(Intent(activity,NewNoteActivity::class.java))
     }
@@ -54,17 +57,22 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
         initRcView()
         observer()
     }
+
+//инициализация RcView
     private fun initRcView() = with(bind){
      rcViewNote.layoutManager = LinearLayoutManager(activity)
         adapter = NoteAdapter(listener = this@NoteFragment)
         rcViewNote.adapter=adapter
     }
+
+//постоянно смотрит на изменения ( LiveData )
     private fun observer(){
         mainViewModel.allNotes.observe(viewLifecycleOwner,{
             adapter.submitList(it)
         })
     }
-    //получение результата с активити
+
+//получение результата с активити
     private fun onEditResult(){
         editLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){
@@ -77,11 +85,11 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
             }
         }
     }
-
+//удаление заметки
     override fun deleteItem(id: Int) {
         mainViewModel.deleteNote(id)
     }
-
+//запуск активити, и передача заметки при нажатии на элемент
     override fun onClickItem(note: NoteItem) {
         val intent = Intent(activity,NewNoteActivity::class.java).apply {
             putExtra(NEW_NOTE_KEY,note)
@@ -89,7 +97,7 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
         editLauncher.launch(intent)
     }
 
-
+// ключи тут, чтобы использовать везде
     companion object {
         const val NEW_NOTE_KEY = "note_key"
         const val EDIT_STATE_KEY = "edit_key"

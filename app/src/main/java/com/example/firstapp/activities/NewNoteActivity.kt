@@ -1,11 +1,13 @@
 package com.example.firstapp.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Typeface
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
+import android.text.Spannable
+import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.set
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityNewNoteBinding
 import com.example.firstapp.entities.NoteItem
@@ -25,7 +27,7 @@ class NewNoteActivity : AppCompatActivity() {
         actionBarSettings()
         getNote()
     }
-
+//забирает данные из фрагмента( если мы передаем )
     private fun getNote(){
         val sNote = intent.getSerializableExtra(NoteFragment.NEW_NOTE_KEY)
         sNote?.let {
@@ -34,12 +36,13 @@ class NewNoteActivity : AppCompatActivity() {
         }
 
     }
-
+//заполняет разметку по новому
     private fun fillNote() = with(bind){
         edTitle.setText(note?.title)
         edDescription.setText(note?.content)
     }
 
+//раздувка меню
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.nw_note_menu,menu)
         return super.onCreateOptionsMenu(menu)
@@ -51,9 +54,32 @@ class NewNoteActivity : AppCompatActivity() {
      } else if (item.itemId== android.R.id.home){
          finish()
      }
+     else if (item.itemId== R.id.id_bold){
+      setBoldForSelectedText()
+     }
         return super.onOptionsItemSelected(item)
     }
+//жирный шрифт
+    private fun setBoldForSelectedText() =with(bind){
+    val startPosition = edDescription.selectionStart
+    val endPosition = edDescription.selectionEnd
+    val oldText = edDescription.text.toString()
+    val styles = edDescription.text.getSpans(startPosition,endPosition,StyleSpan::class.java)
+    var boldStyle:StyleSpan? = null
+    if(styles.isNotEmpty()){
 
+   edDescription.setText(oldText)
+    }
+    else{
+        boldStyle = StyleSpan(Typeface.BOLD)
+        edDescription.text.setSpan(boldStyle,startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+
+
+    edDescription.text.trim()
+    edDescription.setSelection(startPosition)
+    }
+//обновление заметок
     private fun updateNote(): NoteItem? = with(bind){
         return note?.copy(
             title=edTitle.text.toString(),
@@ -79,7 +105,7 @@ class NewNoteActivity : AppCompatActivity() {
     setResult(RESULT_OK,i)
     finish()
     }
-
+// создает новую разметку
     private fun createNewNote(): NoteItem{
         return NoteItem(
             null,
@@ -90,11 +116,13 @@ class NewNoteActivity : AppCompatActivity() {
 
         )
     }
-
+//считывает время и дату
     private fun getCurrentTime(): String{
         val formatter = SimpleDateFormat("hh:mm:ss - yyyy/MM/dd", Locale.getDefault())
         return formatter.format(Calendar.getInstance().time)
     }
+
+//кнопка назад
     private fun actionBarSettings(){
         val ab = supportActionBar
         ab?.setDisplayHomeAsUpEnabled(true)

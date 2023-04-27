@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setBottomNavListener()
 
     }
-
+//обработчик нажатий на нижнее меню
     private fun setBottomNavListener() {
        bind.navView.setOnItemSelectedListener {
 
