@@ -12,6 +12,7 @@ import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityNewNoteBinding
 import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.fragments.NoteFragment
+import com.example.firstapp.utils.HtmlManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,7 +40,7 @@ class NewNoteActivity : AppCompatActivity() {
 //заполняет разметку по новому
     private fun fillNote() = with(bind){
         edTitle.setText(note?.title)
-        edDescription.setText(note?.content)
+        edDescription.setText(HtmlManager.getFromHtml(note?.content!!).trim())
     }
 
 //раздувка меню
@@ -83,9 +84,9 @@ class NewNoteActivity : AppCompatActivity() {
     private fun updateNote(): NoteItem? = with(bind){
         return note?.copy(
             title=edTitle.text.toString(),
-            content = edDescription.text.toString())
+            content = HtmlManager.toHtml(edDescription.text)
 
-
+        )
     }
 
 
@@ -110,7 +111,7 @@ class NewNoteActivity : AppCompatActivity() {
         return NoteItem(
             null,
             bind.edTitle.text.toString(),
-            bind.edDescription.text.toString(),
+            HtmlManager.toHtml(bind.edDescription.text),
             getCurrentTime(),
             ""
 

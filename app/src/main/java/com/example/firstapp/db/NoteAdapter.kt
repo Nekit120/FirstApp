@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.R
 import com.example.firstapp.databinding.NoteListItemBinding
 import com.example.firstapp.entities.NoteItem
+import com.example.firstapp.utils.HtmlManager
 
 class NoteAdapter(private var listener: Listener): ListAdapter<NoteItem, NoteAdapter.ItemHolder>(NoteAdapter.ItemComparator()) {
 
@@ -26,7 +27,7 @@ class NoteAdapter(private var listener: Listener): ListAdapter<NoteItem, NoteAda
         fun setData(note:NoteItem, listener: Listener) = with(bind){
 
             tvTittle.text = note.title
-            tvDescription.text = note.content
+            tvDescription.text = HtmlManager.getFromHtml(note.content).trim()
             tvTime.text = note.time
             itemView.setOnClickListener{
                 listener.onClickItem(note)
