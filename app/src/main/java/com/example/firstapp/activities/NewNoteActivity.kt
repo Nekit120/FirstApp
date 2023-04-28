@@ -1,18 +1,25 @@
 package com.example.firstapp.activities
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityNewNoteBinding
 import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.fragments.NoteFragment
 import com.example.firstapp.utils.HtmlManager
+import com.example.firstapp.utils.MyTouchListener
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +34,14 @@ class NewNoteActivity : AppCompatActivity() {
         setContentView(bind.root)
         actionBarSettings()
         getNote()
+        init ()
+        onClickColorPicker()
+    }
+
+//движение colorPicker
+    @SuppressLint("ClickableViewAccessibility")
+    private fun init (){
+        bind.colorPicker.setOnTouchListener(MyTouchListener())
     }
 //забирает данные из фрагмента( если мы передаем )
     private fun getNote(){
@@ -58,6 +73,13 @@ class NewNoteActivity : AppCompatActivity() {
      else if (item.itemId== R.id.id_bold){
       setBoldForSelectedText()
      }
+     else if (item.itemId== R.id.id_colorPicker){
+         if (bind.colorPicker.isShown){
+             closeColorPicker()
+         } else {
+             openColorPicker()
+         }
+     }
         return super.onOptionsItemSelected(item)
     }
 //жирный шрифт
@@ -67,8 +89,8 @@ class NewNoteActivity : AppCompatActivity() {
     val oldText = edDescription.text.toString()
     val styles = edDescription.text.getSpans(startPosition,endPosition,StyleSpan::class.java)
     var boldStyle:StyleSpan? = null
-    if(styles.isNotEmpty()){
 
+    if(styles.isNotEmpty()){
    edDescription.setText(oldText)
     }
     else{
@@ -76,10 +98,49 @@ class NewNoteActivity : AppCompatActivity() {
         edDescription.text.setSpan(boldStyle,startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
-
     edDescription.text.trim()
     edDescription.setSelection(startPosition)
     }
+
+//Изменение цвета colorPicker
+    private fun setColorForSelectedText(colorId:Int) =with(bind){
+        val startPosition = edDescription.selectionStart
+        val endPosition = edDescription.selectionEnd
+        val oldText = edDescription.text.toString()
+        val styles = edDescription.text.getSpans(startPosition,endPosition,ForegroundColorSpan::class.java)
+        var boldStyle:StyleSpan? = null
+
+        if(styles.isNotEmpty()) edDescription.text.removeSpan(styles[0])
+
+        edDescription.text.setSpan(ForegroundColorSpan(
+            ContextCompat.getColor(this@NewNoteActivity,colorId)),
+            startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        edDescription.text.trim()
+        edDescription.setSelection(startPosition)
+    }
+
+//обработчик нажатий colorPicker
+    private fun onClickColorPicker() = with(bind){
+    ibBlue.setOnClickListener{
+        setColorForSelectedText(R.color.picker_blue)
+    }
+    ibGreen.setOnClickListener {
+        setColorForSelectedText(R.color.picker_green)
+    }
+    ibOrange.setOnClickListener {
+        setColorForSelectedText(R.color.picker_orange)
+    }
+    ibPurple.setOnClickListener {
+        setColorForSelectedText(R.color.black)
+    }
+    ibYellow.setOnClickListener {
+        setColorForSelectedText(R.color.picker_yellow)
+    }
+    ibRed.setOnClickListener {
+        setColorForSelectedText(R.color.picker_red)
+    }
+    }
+
 //обновление заметок
     private fun updateNote(): NoteItem? = with(bind){
         return note?.copy(
@@ -127,5 +188,32 @@ class NewNoteActivity : AppCompatActivity() {
     private fun actionBarSettings(){
         val ab = supportActionBar
         ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+//открытие colorPicker с анимацией
+    private fun openColorPicker(){
+         bind.colorPicker.visibility = View.VISIBLE
+         val openAnim = AnimationUtils.loadAnimation(this, R.anim.open_color_picker)
+         bind.colorPicker.startAnimation(openAnim)
+    }
+
+//закрытие colorPicker с анимацией
+    private fun closeColorPicker(){
+        val openAnim = AnimationUtils.loadAnimation(this, R.anim.close_color_picker)
+        openAnim.setAnimationListener(object: Animation.AnimationListener{
+            override fun onAnimationStart(p0: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                bind.colorPicker.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {
+
+            }
+
+        })
+        bind.colorPicker.startAnimation(openAnim)
     }
 }
