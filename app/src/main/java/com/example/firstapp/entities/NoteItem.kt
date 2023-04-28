@@ -16,4 +16,8 @@ data class NoteItem(
     val time:String,
     @ColumnInfo(name = "category")
     val category:String
+
 )
+
+): java.io.Serializable
+
