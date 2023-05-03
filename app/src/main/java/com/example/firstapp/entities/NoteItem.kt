@@ -17,7 +17,5 @@ data class NoteItem(
     @ColumnInfo(name = "category")
     val category:String
 
-)
-
 ): java.io.Serializable
 

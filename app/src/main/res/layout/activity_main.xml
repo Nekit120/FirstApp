@@ -5,12 +5,8 @@
     android:id="@+id/placeHolder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context=".activities.MainActivity">
-
     tools:context=".activities.MainActivity"
     tools:menu="@menu/bottom_menu">
-
 
     <FrameLayout
         android:layout_width="0dp"

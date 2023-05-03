@@ -91,7 +91,7 @@ class NewNoteActivity : AppCompatActivity() {
     var boldStyle:StyleSpan? = null
 
     if(styles.isNotEmpty()){
-   edDescription.setText(oldText)
+        edDescription.text.removeSpan(styles[0])
     }
     else{
         boldStyle = StyleSpan(Typeface.BOLD)
@@ -106,17 +106,17 @@ class NewNoteActivity : AppCompatActivity() {
     private fun setColorForSelectedText(colorId:Int) =with(bind){
         val startPosition = edDescription.selectionStart
         val endPosition = edDescription.selectionEnd
-        val oldText = edDescription.text.toString()
         val styles = edDescription.text.getSpans(startPosition,endPosition,ForegroundColorSpan::class.java)
-        var boldStyle:StyleSpan? = null
 
-        if(styles.isNotEmpty()) edDescription.text.removeSpan(styles[0])
 
-        edDescription.text.setSpan(ForegroundColorSpan(
-            ContextCompat.getColor(this@NewNoteActivity,colorId)),
-            startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        edDescription.text.trim()
-        edDescription.setSelection(startPosition)
+        if(styles.isNotEmpty()){ edDescription.text.removeSpan(styles[0])}
+
+            edDescription.text.setSpan(ForegroundColorSpan(
+                ContextCompat.getColor(this@NewNoteActivity,colorId)),
+                startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            edDescription.text.trim()
+            edDescription.setSelection(startPosition)
+
     }
 
 //обработчик нажатий colorPicker

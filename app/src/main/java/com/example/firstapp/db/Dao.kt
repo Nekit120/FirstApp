@@ -12,12 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface Dao {
 
-  @Query("SELECT * FROM NoteItem")
-  fun getAllNotes(): Flow<List<NoteItem>>
-
-  @Insert
-  suspend fun insertNow(note:NoteItem)
-
   @Query ("SELECT * FROM note_list")
   fun getAllItems(): kotlinx.coroutines.flow.Flow<List<NoteItem>>
   @Query ("DELETE FROM note_list WHERE id IS :id")
