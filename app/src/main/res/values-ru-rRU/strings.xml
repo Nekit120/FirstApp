@@ -8,4 +8,6 @@
     <string name="hello_blank_fragment">Привет бланк фрагмент</string>
     <string name="title_hint">Заголовок</string>
     <string name="description_hint">Содержание</string>
+    <string name="new_list">Названия нового списка покупок</string>
+    <string name="list_name">Название списка</string>
 </resources>
