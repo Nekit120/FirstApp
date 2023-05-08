@@ -20,6 +20,7 @@ import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.fragments.NoteFragment
 import com.example.firstapp.utils.HtmlManager
 import com.example.firstapp.utils.MyTouchListener
+import com.example.firstapp.utils.TimeMeneger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -173,15 +174,10 @@ class NewNoteActivity : AppCompatActivity() {
             null,
             bind.edTitle.text.toString(),
             HtmlManager.toHtml(bind.edDescription.text),
-            getCurrentTime(),
+           TimeMeneger.getCurrentTime(),
             ""
 
         )
-    }
-//считывает время и дату
-    private fun getCurrentTime(): String{
-        val formatter = SimpleDateFormat("hh:mm:ss - yyyy/MM/dd", Locale.getDefault())
-        return formatter.format(Calendar.getInstance().time)
     }
 
 //кнопка назад
