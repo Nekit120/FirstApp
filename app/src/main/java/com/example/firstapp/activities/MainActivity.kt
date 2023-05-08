@@ -8,6 +8,7 @@ import com.example.firstapp.databinding.ActivityMainBinding
 import com.example.firstapp.dialogs.NewListDialog
 import com.example.firstapp.fragments.FragmentManager
 import com.example.firstapp.fragments.NoteFragment
+import com.example.firstapp.fragments.ShopListNamesFragment
 
 class MainActivity : AppCompatActivity(), NewListDialog.listener {
     lateinit var bind : ActivityMainBinding
@@ -37,9 +38,7 @@ class MainActivity : AppCompatActivity(), NewListDialog.listener {
                 }
 
                 R.id.shopList -> {
-                    NewListDialog.showDialog(   this,this)
-                    val toast = Toast.makeText(applicationContext, "shopList",Toast.LENGTH_SHORT)
-                    toast.show()
+                    FragmentManager.setFragment(ShopListNamesFragment.newInstance(),this)
                 }
 
             }
