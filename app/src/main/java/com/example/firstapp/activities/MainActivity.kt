@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityMainBinding
+import com.example.firstapp.dialogs.NewListDialog
 import com.example.firstapp.fragments.FragmentManager
 import com.example.firstapp.fragments.NoteFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewListDialog.listener {
     lateinit var bind : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.shopList -> {
+                    NewListDialog.showDialog(   this,this)
                     val toast = Toast.makeText(applicationContext, "shopList",Toast.LENGTH_SHORT)
                     toast.show()
                 }
@@ -43,5 +45,9 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+    
+    override fun onClick(name: String) {
+        TODO("Not yet implemented")
     }
 }
