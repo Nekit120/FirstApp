@@ -10,7 +10,7 @@ import com.example.firstapp.fragments.FragmentManager
 import com.example.firstapp.fragments.NoteFragment
 import com.example.firstapp.fragments.ShopListNamesFragment
 
-class MainActivity : AppCompatActivity(), NewListDialog.listener {
+class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     lateinit var bind : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,5 @@ class MainActivity : AppCompatActivity(), NewListDialog.listener {
         }
     }
     
-    override fun onClick(name: String) {
-        TODO("Not yet implemented")
-    }
+    override fun onClick(name: String) {    }
 }
