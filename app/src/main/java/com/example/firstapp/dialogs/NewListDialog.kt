@@ -7,17 +7,19 @@ import com.example.firstapp.databinding.NewListDialogBinding
 import com.example.firstapp.db.NoteAdapter
 
 object NewListDialog {
-    fun showDialog(context: Context,listener: listener){
+    fun showDialog(context: Context,listener: Listener){
         var dialog :AlertDialog? = null
         val builder = AlertDialog.Builder(context)
         val bind = NewListDialogBinding.inflate(LayoutInflater.from(context))
         builder.setView(bind.root)
         bind.apply {
-            val listName = edNewListName.text.toString()
+
             bCreate.setOnClickListener{
-                if(listName.isNotEmpty()){
+              val ListText = edNewListName.text
+              var listName = ListText.toString()
+              if(listName.isNotEmpty()){
                     listener.onClick(listName)
-                }
+              }
                 dialog?.dismiss()
             }
         }
@@ -26,7 +28,7 @@ object NewListDialog {
         dialog.show()
     }
 
-    interface listener {
+    interface Listener {
         fun onClick(name: String)
     }
 }

@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.firstapp.R
 import com.example.firstapp.activities.MainApp
 import com.example.firstapp.databinding.FragmentShomListNamesBinding
 import com.example.firstapp.db.MainViewModel
+import com.example.firstapp.db.ShopListNameAdapter
 import com.example.firstapp.dialogs.NewListDialog
 import com.example.firstapp.entities.ShoppingListNames
 import com.example.firstapp.utils.TimeMeneger
 
 
-class ShopListNamesFragment : BaseFragment() {
+class ShopListNamesFragment : BaseFragment(){
     private lateinit var bind: FragmentShomListNamesBinding
+    private lateinit var adapter: ShopListNameAdapter
+
 
 
     //Создание бд
@@ -26,20 +31,20 @@ class ShopListNamesFragment : BaseFragment() {
 
 
     override fun onClickNew() {
-    NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.listener{
-        override fun onClick(name: String) {
-            val shopListName = ShoppingListNames(
-                null,
-                name,
-                TimeMeneger.getCurrentTime(),
-                0,
-                0,
-                ""
-            )
-            mainViewModel.insertShopListName(shopListName)
-        }
+        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener{
+            override fun onClick(name: String) {
+                val shopListName = ShoppingListNames(
+                    null,
+                    name,
+                    TimeMeneger.getCurrentTime(),
+                    0,
+                    0,
+                    ""
+                )
+                mainViewModel.insertShopListName(shopListName)
+            }
 
-    })
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,12 +69,15 @@ class ShopListNamesFragment : BaseFragment() {
 
     //инициализация RcView
     private fun initRcView() = with(bind){
-
+        rcView.layoutManager = LinearLayoutManager(activity)
+        adapter = ShopListNameAdapter()
+        rcView.adapter=adapter
     }
 
     //постоянно смотрит на изменения ( LiveData )
     private fun observer(){
         mainViewModel.allShoppingListNames.observe(viewLifecycleOwner,{
+            adapter.submitList(it)
         })
     }
 
@@ -79,5 +87,8 @@ class ShopListNamesFragment : BaseFragment() {
         fun newInstance() = ShopListNamesFragment()
 
     }
+
+
+
 
 }
