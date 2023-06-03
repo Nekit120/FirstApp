@@ -19,6 +19,8 @@ interface Dao {
   fun getAllShopListNames(): kotlinx.coroutines.flow.Flow<List<ShoppingListNames>>
   @Query ("DELETE FROM note_list WHERE id IS :id")
   suspend fun deleteNote(id:Int)
+  @Query ("DELETE FROM shopping_list_names WHERE id IS :id")
+  suspend fun deleteShopListName(id:Int)
   @Insert
   suspend fun insertNote(note:NoteItem)
   @Update

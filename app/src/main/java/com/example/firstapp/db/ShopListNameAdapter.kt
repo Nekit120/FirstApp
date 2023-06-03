@@ -9,30 +9,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ListNameItemBinding
 import com.example.firstapp.databinding.NoteListItemBinding
+import com.example.firstapp.dialogs.DeleteDialog
 import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.entities.ShoppingListNames
 import com.example.firstapp.utils.HtmlManager
 
-class ShopListNameAdapter(): ListAdapter<ShoppingListNames, ShopListNameAdapter.ItemHolder>(ShopListNameAdapter.ItemComparator()) {
+class ShopListNameAdapter(private var listenner: Listener): ListAdapter<ShoppingListNames, ShopListNameAdapter.ItemHolder>(ShopListNameAdapter.ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
       return ItemHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-     holder.setData(getItem(position))
+     holder.setData(getItem(position),listenner)
     }
 
     class ItemHolder(view:View) : RecyclerView.ViewHolder(view){
         private val bind = ListNameItemBinding.bind(view)
 
-        fun setData(shopListNameItem:ShoppingListNames) = with(bind){
+        fun setData(shopListNameItem:ShoppingListNames,listenner: Listener) = with(bind){
 
             tvListName.text = shopListNameItem.name
             tvTime.text = shopListNameItem.time
             itemView.setOnClickListener{
                 }
             imDelete.setOnClickListener{
+                listenner.deleteItem(shopListNameItem.id!!)
             }
         }
 
