@@ -11,4 +11,8 @@
     <string name="new_list">Названия нового списка покупок</string>
     <string name="list_name">Название списка</string>
     <string name="create_list">Создать список</string>
+    <string name="delete_item">"Вы хотите удалить этот список ? "</string>
+    <string name="delete_alert">Удаление</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
 </resources>
