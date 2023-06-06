@@ -28,6 +28,9 @@ class MainViewModel(database:MainDataBase) : ViewModel() {
     fun updateNote(note:NoteItem) = viewModelScope.launch {
         dao.updateNote(note)
     }
+    fun updateListName(ShopListName:ShoppingListNames) = viewModelScope.launch {
+        dao.updateListName(ShopListName)
+    }
 
 
     class MainViewModelFactory(val database: MainDataBase): ViewModelProvider.Factory {
