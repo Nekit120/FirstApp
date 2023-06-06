@@ -46,7 +46,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
                 mainViewModel.insertShopListName(shopListName)
             }
 
-        })
+        },"")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +91,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
     }
 
     override fun deleteItem(id: Int) {
-        DeleteDialog.showDialog(context as AppCompatActivity, object : DeleteDialog.Listener{
+        DeleteDialog.showDialog(context as AppCompatActivity, object : DeleteDialog.Listener {
             override fun onClick() {
                 mainViewModel.deleteShopListName(id)
             }
@@ -99,7 +99,13 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
         })
     }
 
-    override fun onClickItem(note: NoteItem) {
+    override fun editItem(shopListNameItem: ShoppingListNames) {
+        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener{
+            override fun onClick(name: String) {
+                mainViewModel.updateListName(shopListNameItem.copy(name = name))
+    } }, shopListNameItem.name)}
+
+    override fun onClickItem(ShopListName: ShoppingListNames) {
 
     }
 

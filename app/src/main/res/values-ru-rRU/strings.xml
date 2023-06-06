@@ -15,4 +15,5 @@
     <string name="delete_alert">Удаление</string>
     <string name="cancel">Отмена</string>
     <string name="delete">Удалить</string>
+    <string name="update">Обновить</string>
 </resources>
