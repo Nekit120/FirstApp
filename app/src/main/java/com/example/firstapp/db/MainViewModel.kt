@@ -2,6 +2,7 @@ package com.example.firstapp.db
 
 import androidx.lifecycle.*
 import com.example.firstapp.entities.NoteItem
+import com.example.firstapp.entities.ShopListItem
 import com.example.firstapp.entities.ShopListNameItem
 import kotlinx.coroutines.launch
 
@@ -11,6 +12,10 @@ class MainViewModel(database:MainDataBase) : ViewModel() {
     val allNotes: LiveData<List<NoteItem>> = dao.getAllItems().asLiveData()
     val allShopListNameItem: LiveData<List<ShopListNameItem>> = dao.getAllShopListNames().asLiveData()
 
+    fun getAllItemsFromList(listId: Int):LiveData<List<ShopListItem>>{
+        return dao.getAllShopListItems(listId).asLiveData()
+    }
+
     fun insertNote(note:NoteItem) = viewModelScope.launch {
         dao.insertNote(note)
     }
@@ -18,7 +23,9 @@ class MainViewModel(database:MainDataBase) : ViewModel() {
     fun insertShopListName(listName: ShopListNameItem) = viewModelScope.launch {
         dao.insertShopListName(listName)
     }
-
+    fun insertShopListItem(shopListItem: ShopListItem) = viewModelScope.launch {
+        dao.insertItem(shopListItem)
+    }
     fun deleteNote(id:Int) = viewModelScope.launch {
         dao.deleteNote(id)
     }
