@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/peach_back"
+    android:background="#98FDE1D6"
     tools:context=".activities.ShopListActivity">
 
     <TextView
