@@ -36,7 +36,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.19999999" />
+                app:layout_constraintVertical_bias="0.16000003" />
 
             <TextView
                 android:id="@+id/tvInfo"
@@ -45,8 +45,9 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
+                android:textColor="@color/grey_light"
                 android:textSize="12sp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tvName"
                 app:layout_constraintHorizontal_bias="0.0"

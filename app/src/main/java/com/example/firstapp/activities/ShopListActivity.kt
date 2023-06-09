@@ -1,10 +1,12 @@
 package com.example.firstapp.activities
 
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.activity.viewModels
@@ -65,7 +67,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             null,
             edItem?.text.toString(),
             null,
-            0,
+            false,
             shopListNameItem?.id!!,
             0
         )
@@ -76,7 +78,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private fun listItemObserver(){
         mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).observe(this,{
             adapter?.submitList(it)
-        })
+            bind.tvEmpty.visibility = if(it.isEmpty()) {View.VISIBLE} else {View.GONE} })
     }
 
     private fun initRcView() = with(bind){
@@ -107,15 +109,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         const val SHOP_LIST_NAME = "shop_list_name"
     }
 
-    override fun deleteItem(id: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun editItem(shopListNameItem: ShopListNameItem) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickItem(ShopListName: ShopListNameItem) {
-        TODO("Not yet implemented")
+    override fun onClickItem(shopListItem: ShopListItem) {
+        mainViewModel.updateListItem(shopListItem)
     }
 }
