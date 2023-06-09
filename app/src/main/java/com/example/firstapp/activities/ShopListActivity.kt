@@ -72,7 +72,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         edItem?.setText("")
         mainViewModel.insertShopListItem(item)
     }
-
+//observer
     private fun listItemObserver(){
         mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).observe(this,{
             adapter?.submitList(it)
