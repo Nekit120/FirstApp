@@ -1,8 +1,10 @@
 package com.example.firstapp.db
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopList
       else ItemHolder.createLibraryItem(parent)
     }
 
+
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
      if (getItem(position).itemType == 0) {holder.setItemData(getItem(position),listenner)}
         else {holder.setLibraryData(getItem(position),listenner)}
@@ -33,15 +36,38 @@ class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopList
                 tvName.text = shopListItem.name
                 tvInfo.text = shopListItem.itemInfo
                 tvInfo.visibility = infoVisibility(shopListItem)
+                chBox.isChecked = shopListItem.itemChecked
+                setPaintFlagAndColor(bind)
+                chBox.setOnClickListener{
+                  //  setPaintFlagAndColor(bind)
+                    listener.onClickItem(shopListItem.copy(itemChecked = chBox.isChecked))
+                }
             }
         }
 
-        fun infoVisibility(shopListItem:ShopListItem): Int{
+        private fun  setPaintFlagAndColor(bind: ShopListItemBinding){
+            bind.apply {
+                if (chBox.isChecked){
+                    tvName.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    tvInfo.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    tvName.setTextColor(ContextCompat.getColor(bind.root.context,R.color.grey_light))
+                }else{
+                    tvName.paintFlags = Paint.ANTI_ALIAS_FLAG
+                    tvInfo.paintFlags = Paint.ANTI_ALIAS_FLAG
+                    tvName.setTextColor(ContextCompat.getColor(bind.root.context,R.color.black))
+                }
+            }
+        }
+
+
+        private fun infoVisibility(shopListItem:ShopListItem): Int{
             return if (shopListItem.itemInfo.isNullOrEmpty()){
                 View.GONE
             } else {View.VISIBLE}
 
         }
+
+
 
         fun setLibraryData(shopListItem:ShopListItem, listener: Listener){
 
@@ -73,9 +99,7 @@ class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopList
     }
 
     interface Listener{
-        fun deleteItem(id:Int)
-        fun editItem(shopListNameItem: ShopListNameItem)
-        fun onClickItem(ShopListName:ShopListNameItem)
+        fun onClickItem(ShopListNItem:ShopListItem)
 
     }
 

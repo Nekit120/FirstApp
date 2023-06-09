@@ -38,7 +38,9 @@ class MainViewModel(database:MainDataBase) : ViewModel() {
     fun updateListName(ShopListName:ShopListNameItem) = viewModelScope.launch {
         dao.updateListName(ShopListName)
     }
-
+    fun updateListItem(item:ShopListItem) = viewModelScope.launch {
+        dao.updateListItem(item)
+    }
 
     class MainViewModelFactory(val database: MainDataBase): ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

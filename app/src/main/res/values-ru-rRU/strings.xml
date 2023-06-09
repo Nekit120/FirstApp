@@ -19,4 +19,5 @@
     <string name="clear_list">Очистить список</string>
     <string name="delete_list">Удалить список</string>
     <string name="share_list">Поделиться списком</string>
+    <string name="empty">Пусто</string>
 </resources>
