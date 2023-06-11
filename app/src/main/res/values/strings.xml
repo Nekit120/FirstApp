@@ -23,4 +23,5 @@
     <string name="update_list_item">Update List Item</string>
     <string name="name">Name</string>
     <string name="item_info">Item info</string>
+    <string name="share">Share by</string>
 </resources>
