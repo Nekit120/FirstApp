@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstapp.activities.MainApp
-import com.example.firstapp.activities.NewNoteActivity
 import com.example.firstapp.activities.ShopListActivity
 import com.example.firstapp.databinding.FragmentShopListNamesBinding
 import com.example.firstapp.db.MainViewModel
@@ -94,7 +93,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
     override fun deleteItem(id: Int) {
         DeleteDialog.showDialog(context as AppCompatActivity, object : DeleteDialog.Listener {
             override fun onClick() {
-                mainViewModel.deleteShopListName(id)
+                mainViewModel.deleteShopList(id)
             }
 
         })

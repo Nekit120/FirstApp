@@ -1,5 +1,6 @@
 package com.example.firstapp.activities
 
+import android.content.Intent
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.example.firstapp.db.ShopListItemAdapter
 import com.example.firstapp.dialogs.EditListItemDialog
 import com.example.firstapp.entities.ShopListItem
 import com.example.firstapp.entities.ShopListNameItem
+import com.example.firstapp.utils.ShareHelper
 
 @Suppress("DEPRECATION")
 class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
@@ -58,6 +60,14 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.save_item){
             addNewShopItem()
+        }else if(item.itemId == R.id.delete_list){
+            mainViewModel.deleteShopList(shopListNameItem?.id!!)
+            finish()
+        }else if(item.itemId == R.id.clear_list){
+            mainViewModel.deleteShopListFullItem(shopListNameItem?.id!!)
+
+        }else if(item.itemId == R.id.share_list){
+            startActivity(Intent.createChooser(ShareHelper.shareShopList(adapter?.currentList!!, shopListNameItem?.name!!),"Share by"))
         }
         return super.onOptionsItemSelected(item)
     }

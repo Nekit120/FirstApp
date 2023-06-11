@@ -23,4 +23,5 @@
     <string name="update_list_item">Обновить элемент списка</string>
     <string name="name">Название</string>
     <string name="item_info">"Информация о предмете "</string>
+    <string name="share">Поделиться по</string>
 </resources>
