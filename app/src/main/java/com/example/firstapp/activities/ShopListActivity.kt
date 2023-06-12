@@ -4,6 +4,8 @@ import android.content.Intent
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
@@ -29,6 +31,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private lateinit var saveItem: MenuItem
     private var edItem: EditText? =null
     private var adapter: ShopListItemAdapter? = null
+    private lateinit var textWatcher: TextWatcher
 
     //Объясвление ViewModel
     private val mainViewModel : MainViewModel by viewModels {
@@ -54,6 +57,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         edItem = newItem.actionView?.findViewById(R.id.edNewShopItem) as EditText
         newItem.setOnActionExpandListener(expandActionView())
         saveItem.isVisible = false
+        textWatcher = textWatcher()
         return true
     }
 
@@ -103,11 +107,13 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         return object : MenuItem.OnActionExpandListener{
             override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
                 saveItem.isVisible = true
+                edItem?.addTextChangedListener(textWatcher)
                 return true
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                 saveItem.isVisible = false
+                edItem?.removeTextChangedListener(textWatcher)
                 invalidateOptionsMenu()
                 return true
             }
@@ -126,6 +132,22 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             ShopListItemAdapter.CHECK_BOX ->   mainViewModel.updateListItem(shopListItem)
         }
 
+    }
+    private fun textWatcher(): TextWatcher{
+        return object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        }
     }
     private fun editListItem(item: ShopListItem){
         EditListItemDialog.showDialog(this,item, object : EditListItemDialog.Listener{
