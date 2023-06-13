@@ -1,19 +1,15 @@
 package com.example.firstapp.activities
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityShopListBinding
@@ -91,15 +87,32 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     }
 //observer
     private fun listItemObserver(){
-        mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).observe(this,{
+        mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).observe(this, {
             adapter?.submitList(it)
             bind.tvEmpty.visibility = if(it.isEmpty()) {View.VISIBLE} else {View.GONE} })
+    }
+    private fun LibraryItemObserver(){
+        mainViewModel.libraryItems.observe(this) {
+            val tempShopList = ArrayList<ShopListItem>()
+            it.forEach { item ->
+                val shopItem = ShopListItem(
+                    id = item.id,
+                    name = item.name,
+                    "",
+                    false,
+                    0,
+                    1
+                )
+                tempShopList.add(shopItem)
+            }
+            adapter?.submitList(tempShopList)
+        }
     }
 
     private fun initRcView() = with(bind){
         adapter = ShopListItemAdapter(this@ShopListActivity)
-        rcView.layoutManager =LinearLayoutManager(this@ShopListActivity)
-        rcView.adapter= adapter
+        rcView.layoutManager = LinearLayoutManager(this@ShopListActivity)
+        rcView.adapter = adapter
     }
 
 //слушатель открыт ли plainText или нет, чтобы сделать видимой кнопку сохранения
@@ -108,6 +121,9 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
                 saveItem.isVisible = true
                 edItem?.addTextChangedListener(textWatcher)
+                LibraryItemObserver()
+                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).removeObservers(this@ShopListActivity)
+                mainViewModel.getAllLibraryItems("%%")
                 return true
             }
 
@@ -115,6 +131,9 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
                 saveItem.isVisible = false
                 edItem?.removeTextChangedListener(textWatcher)
                 invalidateOptionsMenu()
+                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
+                edItem?.setText("")
+                listItemObserver()
                 return true
             }
 
@@ -140,7 +159,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            mainViewModel.getAllLibraryItems("%$p0%")
             }
 
             override fun afterTextChanged(p0: Editable?) {
