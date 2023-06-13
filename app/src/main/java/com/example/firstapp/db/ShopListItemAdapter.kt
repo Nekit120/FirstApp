@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ListNameItemBinding
+import com.example.firstapp.databinding.ShopLibraryListItemBinding
 import com.example.firstapp.databinding.ShopListItemBinding
 import com.example.firstapp.entities.ShopListNameItem
 import com.example.firstapp.entities.ShopListItem
@@ -17,10 +18,15 @@ import com.example.firstapp.entities.ShopListItem
 class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopListItem, ShopListItemAdapter.ItemHolder>(ShopListItemAdapter.ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-      return if(viewType == 0) ItemHolder.createShopItem(parent)
-      else ItemHolder.createLibraryItem(parent)
+      return if(viewType == 0)
+          ItemHolder.createShopItem(parent)
+                    else
+          ItemHolder.createLibraryItem(parent)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).itemType
+    }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
      if (getItem(position).itemType == 0) {holder.setItemData(getItem(position),listenner)}
@@ -72,7 +78,10 @@ class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopList
 
 
         fun setLibraryData(shopListItem:ShopListItem, listener: Listener){
-
+            val bind = ShopLibraryListItemBinding.bind(view)
+            bind.apply {
+                tvName.text = shopListItem.name
+            }
         }
 
         companion object{

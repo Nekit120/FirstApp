@@ -9,12 +9,15 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(database:MainDataBase) : ViewModel() {
     val dao = database.getDao()
-
+    val libraryItems = MutableLiveData<List<LibraryItem>>()
     val allNotes: LiveData<List<NoteItem>> = dao.getAllItems().asLiveData()
     val allShopListNameItem: LiveData<List<ShopListNameItem>> = dao.getAllShopListNames().asLiveData()
 
     fun getAllItemsFromList(listId: Int):LiveData<List<ShopListItem>>{
         return dao.getAllShopListItems(listId).asLiveData()
+    }
+    fun getAllLibraryItems (name: String) = viewModelScope.launch {
+        libraryItems.postValue(dao.getAllLibraryItems(name))
     }
 
     fun insertNote(note:NoteItem) = viewModelScope.launch {
