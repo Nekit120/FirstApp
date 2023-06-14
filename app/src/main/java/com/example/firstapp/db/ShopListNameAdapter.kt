@@ -1,8 +1,11 @@
 package com.example.firstapp.db
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +30,15 @@ class ShopListNameAdapter(private var listenner: Listener): ListAdapter<ShopList
 
             tvListName.text = shopListNameItem.name
             tvTime.text = shopListNameItem.time
+            val counterText = "${shopListNameItem.checkedItemsCounter}/${shopListNameItem.allItemCounter}"
+            progressBar.max = shopListNameItem.allItemCounter
+            progressBar.progress = shopListNameItem.checkedItemsCounter
+            val colorStateProgress = ColorStateList.valueOf(getProgressColor(shopListNameItem,bind.root.context))
+            val colorStateCard = ColorStateList.valueOf(getCounterCardColor(shopListNameItem,bind.root.context))
+            progressBar.progressTintList = colorStateProgress
+            counterCard.backgroundTintList = colorStateCard
+            tvCounter.text = counterText
+
             itemView.setOnClickListener{
                 listener.onClickItem(shopListNameItem)
                 }
@@ -37,7 +49,16 @@ class ShopListNameAdapter(private var listenner: Listener): ListAdapter<ShopList
                 listener.editItem(shopListNameItem)
             }
         }
-
+        private fun getProgressColor(item:ShopListNameItem,context: Context): Int {
+            return if(item.checkedItemsCounter == item.allItemCounter) {
+                ContextCompat.getColor(context, R.color.picker_green)
+            } else {ContextCompat.getColor(context, R.color.blue)}
+        }
+        private fun getCounterCardColor(item:ShopListNameItem,context: Context): Int {
+            return if(item.checkedItemsCounter == item.allItemCounter) {
+                ContextCompat.getColor(context, R.color.picker_green)
+            } else {ContextCompat.getColor(context, R.color.picker_blue)}
+        }
         companion object{
             fun create (parent:ViewGroup) : ItemHolder {
                 return ItemHolder(

@@ -41,6 +41,7 @@ class ShopListItemAdapter(private var listenner: Listener): ListAdapter<ShopList
             bind.apply {
                 tvName.text = shopListItem.name
                 tvInfo.text = shopListItem.itemInfo
+
                 tvInfo.visibility = infoVisibility(shopListItem)
                 chBox.isChecked = shopListItem.itemChecked
                 setPaintFlagAndColor(bind)
