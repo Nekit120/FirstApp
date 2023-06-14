@@ -3,6 +3,7 @@ package com.example.firstapp.dialogs
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import com.example.firstapp.R
 import com.example.firstapp.databinding.EditListItemDialogBinding
 import com.example.firstapp.databinding.NewListDialogBinding
@@ -17,7 +18,10 @@ object EditListItemDialog {
         builder.setView(bind.root)
         bind.apply {
             edName.setText(item.name)
+            if(item.itemType == 1) edInfo.visibility = View.GONE
+
             if(item.itemInfo != null) edInfo.setText(item.itemInfo)
+
                 bUpdate.setOnClickListener{
                     if(edName.text.toString().isNotEmpty()){
                         val itemInfo = if(edInfo.text.toString().isEmpty()) null else edInfo.text.toString()
