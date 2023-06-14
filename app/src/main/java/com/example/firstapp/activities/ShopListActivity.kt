@@ -60,7 +60,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.save_item){
-            addNewShopItem()
+            addNewShopItem(edItem?.text.toString())
         }else if(item.itemId == R.id.delete_list){
             mainViewModel.deleteShopList(shopListNameItem?.id!!)
             finish()
@@ -73,11 +73,11 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun addNewShopItem(){
-        if(edItem?.text.toString().isEmpty()) return
+    private fun addNewShopItem(name:String){
+        if(name.isEmpty()) return
         val item = ShopListItem(
             null,
-            edItem?.text.toString(),
+            name,
             null,
             false,
             shopListNameItem?.id!!,
@@ -107,6 +107,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
                 tempShopList.add(shopItem)
             }
             adapter?.submitList(tempShopList)
+            bind.tvEmpty.visibility = if(it.isEmpty()) {View.VISIBLE} else {View.GONE}
         }
     }
 
@@ -151,6 +152,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             ShopListItemAdapter.EDIT -> editListItem(shopListItem)
             ShopListItemAdapter.EDIT_LIBRARY_ITEM -> editLibraryItem(shopListItem)
             ShopListItemAdapter.CHECK_BOX ->   mainViewModel.updateListItem(shopListItem)
+            ShopListItemAdapter.CLICK_LIBRARY_ITEM ->addNewShopItem(shopListItem.name)
             ShopListItemAdapter.DELETE_LIBRARY_ITEM ->{
                 mainViewModel.deleteLibraryItem(shopListItem.id!!)
                 mainViewModel.getAllLibraryItems("%${edItem?.text.toString()}%")
