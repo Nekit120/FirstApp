@@ -12,6 +12,7 @@
             android:entryValues="@array/note_style_values"
             android:icon="@drawable/ic_style"
             android:key="note_style_key"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/choose_note_style" />
         <ListPreference
             android:defaultValue="1"
@@ -19,6 +20,7 @@
             android:entryValues="@array/time_format_values"
             android:icon="@drawable/ic_time"
             android:key="time_format_key"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/choose_time_format" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/theme_settings">
@@ -29,6 +31,7 @@
             android:entryValues="@array/choose_theme_values"
             android:key="theme_key"
             android:icon="@drawable/ic_style_2"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/choose_theme" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/note_text_settings">
@@ -39,6 +42,7 @@
             android:entryValues="@array/text_size_values"
             android:key="title_size_key"
             android:icon="@drawable/ic_text"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/title_text_size" />
         <ListPreference
             android:defaultValue="1"
@@ -46,6 +50,7 @@
             android:entryValues="@array/text_size_values"
             android:key="content_size_key"
             android:icon="@drawable/ic_text"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/note_text_settings" />
     </PreferenceCategory>
 </PreferenceScreen>
