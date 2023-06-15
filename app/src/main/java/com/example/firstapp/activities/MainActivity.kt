@@ -1,5 +1,6 @@
 package com.example.firstapp.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -9,6 +10,8 @@ import com.example.firstapp.dialogs.NewListDialog
 import com.example.firstapp.fragments.FragmentManager
 import com.example.firstapp.fragments.NoteFragment
 import com.example.firstapp.fragments.ShopListNamesFragment
+import com.example.firstapp.settings.SettingsActivity
+import com.example.firstapp.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     lateinit var bind : ActivityMainBinding
@@ -33,8 +36,7 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
                 }
 
                 R.id.settings -> {
-                    val toast = Toast.makeText(applicationContext, "settings",Toast.LENGTH_SHORT)
-                    toast.show()
+                   startActivity(Intent(this,SettingsActivity::class.java))
                 }
 
                 R.id.shopList -> {
