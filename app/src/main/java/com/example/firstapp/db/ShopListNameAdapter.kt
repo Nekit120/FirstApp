@@ -55,7 +55,7 @@ class ShopListNameAdapter(private var listenner: Listener): ListAdapter<ShopList
             } else {ContextCompat.getColor(context, R.color.blue)}
         }
         private fun getCounterCardColor(item:ShopListNameItem,context: Context): Int {
-            return if(item.checkedItemsCounter == item.allItemCounter) {
+            return if(item.checkedItemsCounter == item.allItemCounter && item.allItemCounter !=0) {
                 ContextCompat.getColor(context, R.color.picker_green)
             } else {ContextCompat.getColor(context, R.color.picker_blue)}
         }
