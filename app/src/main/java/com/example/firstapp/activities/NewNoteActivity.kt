@@ -32,8 +32,11 @@ class NewNoteActivity : AppCompatActivity() {
     private lateinit var bind: ActivityNewNoteBinding
     private var note: NoteItem? = null
     private var pref: SharedPreferences? = null
+    private lateinit var defPref:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        defPref= PreferenceManager.getDefaultSharedPreferences(this)
+        setTheme(getSelectedTheme())
         super.onCreate(savedInstanceState)
         bind = ActivityNewNoteBinding.inflate(layoutInflater)
         setContentView(bind.root)
@@ -50,7 +53,14 @@ class NewNoteActivity : AppCompatActivity() {
         bind.colorPicker.setOnTouchListener(MyTouchListener())
         pref = PreferenceManager.getDefaultSharedPreferences(this)
     }
-//забирает данные из фрагмента( если мы передаем )
+
+    private fun getSelectedTheme():Int{
+        return if (defPref.getString("theme_key","peach")=="peach") {
+            R.style.Theme_FirstApp
+        } else{ R.style.Theme_FirstAppGreen }
+    }
+
+    //забирает данные из фрагмента( если мы передаем )
     private fun getNote(){
         val sNote = intent.getSerializableExtra(NoteFragment.NEW_NOTE_KEY)
         sNote?.let {
