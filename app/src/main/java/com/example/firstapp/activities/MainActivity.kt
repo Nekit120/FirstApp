@@ -15,6 +15,7 @@ import com.example.firstapp.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     lateinit var bind : ActivityMainBinding
+    private var currentMenuItemId = R.id.notes
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater).apply {setContentView(this.root)}
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
                 }
 
                 R.id.newItem -> {
+                    currentMenuItemId = R.id.newItem
                     FragmentManager.currentFrag?.onClickNew()
                 }
 
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
                 }
 
                 R.id.shopList -> {
+                    currentMenuItemId = R.id.shopList
                     FragmentManager.setFragment(ShopListNamesFragment.newInstance(),this)
                 }
 
@@ -47,6 +50,10 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
             true
         }
     }
-    
+
+    override fun onResume() {
+        super.onResume()
+        bind.navView.selectedItemId= currentMenuItemId
+    }
     override fun onClick(name: String) {    }
 }

@@ -15,6 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.firstapp.R
 import com.example.firstapp.activities.MainApp
 import com.example.firstapp.activities.NewNoteActivity
@@ -63,10 +65,16 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
 
 //инициализация RcView
     private fun initRcView() = with(bind){
-     rcViewNote.layoutManager = LinearLayoutManager(activity)
         defPref = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }!!
+        rcViewNote.layoutManager = getLayoutManager()
         adapter = NoteAdapter(listener = this@NoteFragment,defPref,mainViewModel,this@NoteFragment)
         rcViewNote.adapter=adapter
+    }
+
+    private fun getLayoutManager(): RecyclerView.LayoutManager{
+        return if (defPref.getString("note_style_key","Linear")== "Linear"){
+            LinearLayoutManager(activity)
+        } else { StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)}
     }
 
 //постоянно смотрит на изменения ( LiveData )
