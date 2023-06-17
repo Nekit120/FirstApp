@@ -2,12 +2,14 @@ package com.example.firstapp.fragments
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstapp.activities.MainApp
 import com.example.firstapp.activities.ShopListActivity
@@ -23,6 +25,7 @@ import com.example.firstapp.utils.TimeMeneger
 class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
     private lateinit var bind: FragmentShopListNamesBinding
     private lateinit var adapter: ShopListNameAdapter
+    private lateinit var defPref: SharedPreferences
 
 
 
@@ -72,7 +75,8 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener{
     //инициализация RcView
     private fun initRcView() = with(bind){
         rcView.layoutManager = LinearLayoutManager(activity)
-        adapter = ShopListNameAdapter(this@ShopListNamesFragment)
+        defPref = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }!!
+        adapter = ShopListNameAdapter(this@ShopListNamesFragment,defPref)
         rcView.adapter=adapter
     }
 

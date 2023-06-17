@@ -1,10 +1,13 @@
 package com.example.firstapp.db
 
+import android.content.SharedPreferences
 import androidx.lifecycle.*
+import com.example.firstapp.R
 import com.example.firstapp.entities.LibraryItem
 import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.entities.ShopListItem
 import com.example.firstapp.entities.ShopListNameItem
+import com.example.firstapp.utils.TimeMeneger
 import kotlinx.coroutines.launch
 
 class MainViewModel(database:MainDataBase) : ViewModel() {
@@ -16,6 +19,7 @@ class MainViewModel(database:MainDataBase) : ViewModel() {
     fun getAllItemsFromList(listId: Int):LiveData<List<ShopListItem>>{
         return dao.getAllShopListItems(listId).asLiveData()
     }
+
     fun getAllLibraryItems (name: String) = viewModelScope.launch {
         libraryItems.postValue(dao.getAllLibraryItems(name))
     }

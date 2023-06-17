@@ -33,5 +33,7 @@
     <string name="choose_text_size">Choose text size</string>
     <string name="title_text_size">Title text size</string>
     <string name="content_text_size">Content text size</string>
+    <string name="peach_theme">Peach theme</string>
+    <string name="green_theme">Green theme</string>
 
 </resources>
