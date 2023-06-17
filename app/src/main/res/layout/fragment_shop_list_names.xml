@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#98FDE1D6"
+    android:background="@color/peach_back"
     tools:context=".fragments.ShomListNamesFragment">
 
     <!-- TODO: Update blank fragment layout -->

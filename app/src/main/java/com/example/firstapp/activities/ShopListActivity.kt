@@ -1,6 +1,7 @@
 package com.example.firstapp.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.activity.viewModels
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityShopListBinding
@@ -29,12 +31,15 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private var edItem: EditText? =null
     private var adapter: ShopListItemAdapter? = null
     private lateinit var textWatcher: TextWatcher
+    private lateinit var defPref: SharedPreferences
 
     //Объясвление ViewModel
     private val mainViewModel : MainViewModel by viewModels {
         MainViewModel.MainViewModelFactory((applicationContext as MainApp).database)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+        defPref= PreferenceManager.getDefaultSharedPreferences(this)
+        setTheme(getSelectedTheme())
         super.onCreate(savedInstanceState)
         bind = ActivityShopListBinding.inflate(layoutInflater).apply { setContentView(this.root) }
         init()
@@ -204,6 +209,13 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         )
         mainViewModel.updateListName(tempShopListNameItem!!)
     }
+
+    private fun getSelectedTheme():Int{
+        return if (defPref.getString("theme_key","peach")=="peach") {
+            R.style.Theme_FirstApp
+        } else{ R.style.Theme_FirstAppGreen }
+    }
+
     override fun onBackPressed() {
         saveItemCoun()
         super.onBackPressed()
