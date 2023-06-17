@@ -1,6 +1,7 @@
 package com.example.firstapp.db
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
@@ -12,24 +13,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ListNameItemBinding
 import com.example.firstapp.entities.ShopListNameItem
+import com.example.firstapp.utils.TimeMeneger
 
-class ShopListNameAdapter(private var listenner: Listener): ListAdapter<ShopListNameItem, ShopListNameAdapter.ItemHolder>(ShopListNameAdapter.ItemComparator()) {
+class ShopListNameAdapter(private var listenner: Listener,val defPref: SharedPreferences): ListAdapter<ShopListNameItem, ShopListNameAdapter.ItemHolder>(ShopListNameAdapter.ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
       return ItemHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-     holder.setData(getItem(position),listenner)
+     holder.setData(getItem(position),listenner,defPref)
     }
 
     class ItemHolder(view:View) : RecyclerView.ViewHolder(view){
         private val bind = ListNameItemBinding.bind(view)
 
-        fun setData(shopListNameItem:ShopListNameItem, listener: Listener) = with(bind){
+        fun setData(shopListNameItem:ShopListNameItem, listener: Listener,defPref: SharedPreferences) = with(bind){
 
             tvListName.text = shopListNameItem.name
-            tvTime.text = shopListNameItem.time
+
+            tvTime.text = TimeMeneger.getTimeFormat(shopListNameItem.time,defPref)
             val counterText = "${shopListNameItem.checkedItemsCounter}/${shopListNameItem.allItemCounter}"
             progressBar.max = shopListNameItem.allItemCounter
             progressBar.progress = shopListNameItem.checkedItemsCounter

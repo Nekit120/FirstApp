@@ -19,8 +19,8 @@
     </string-array>
 
     <string-array name="choose_theme_array">
-        <item>Peach theme</item>
-        <item>Green theme</item>
+        <item>@string/peach_theme</item>
+        <item>@string/green_theme</item>
     </string-array>
     <string-array name="choose_theme_values">
         <item>peach</item>

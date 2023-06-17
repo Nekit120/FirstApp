@@ -18,14 +18,14 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater).apply {setContentView(this.root)}
-
+        bind.navView.menu.getItem(1).setChecked(false)
+        FragmentManager.setFragment(NoteFragment.newInstance(),this)
         setBottomNavListener()
 
     }
     //обработчик нажатий на нижнее меню
     private fun setBottomNavListener() {
         bind.navView.setOnItemSelectedListener {
-
             when(it.itemId){
                 R.id.notes -> {
                     FragmentManager.setFragment(NoteFragment.newInstance(),this)

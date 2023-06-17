@@ -16,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home) finish() 
+        if(item.itemId == android.R.id.home) finish()
         return super.onOptionsItemSelected(item)
     }
 }
