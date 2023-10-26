@@ -4,13 +4,19 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="peach_back">#FDE1D6</color>
+    <color name="peach_back">#98FDE1D6</color>
     <color name="peach">#FB6D72</color>
     <color name="peach2">#F85F65</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-//color picker
+    <color name="blue">#D93193EA</color>
+    <color name="grey">#474747</color>
+    <color name="grey_light">#8A8181</color>
+    <color name="green_main">#10B14B</color>
+    <color name="green_main_dark">#067A31</color>
+
+    //color picker
     <color name="picker_red">#FC0606</color>
     <color name="picker_green">#1A8E1A</color>
     <color name="picker_blue">#2483D7</color>

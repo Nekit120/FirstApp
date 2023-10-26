@@ -4,11 +4,11 @@
     android:id="@+id/constai"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#98FDE1D6"
+    android:background="@color/peach_back"
     tools:context=".fragments.NoteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewNote"
         android:layout_width="match_parent"
-        android:layout_height="740dp" />
+        android:layout_height="744dp" />
 </FrameLayout>

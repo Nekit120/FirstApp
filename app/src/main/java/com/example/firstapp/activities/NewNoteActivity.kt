@@ -1,6 +1,7 @@
 package com.example.firstapp.activities
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -11,15 +12,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
+import androidx.preference.PreferenceManager
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityNewNoteBinding
 import com.example.firstapp.entities.NoteItem
 import com.example.firstapp.fragments.NoteFragment
 import com.example.firstapp.utils.HtmlManager
 import com.example.firstapp.utils.MyTouchListener
+import com.example.firstapp.utils.TimeMeneger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,14 +31,19 @@ class NewNoteActivity : AppCompatActivity() {
 
     private lateinit var bind: ActivityNewNoteBinding
     private var note: NoteItem? = null
+    private var pref: SharedPreferences? = null
+    private lateinit var defPref:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        defPref= PreferenceManager.getDefaultSharedPreferences(this)
+        setTheme(getSelectedTheme())
         super.onCreate(savedInstanceState)
         bind = ActivityNewNoteBinding.inflate(layoutInflater)
         setContentView(bind.root)
         actionBarSettings()
         getNote()
         init ()
+        setTextSize()
         onClickColorPicker()
     }
 
@@ -42,8 +51,16 @@ class NewNoteActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun init (){
         bind.colorPicker.setOnTouchListener(MyTouchListener())
+        pref = PreferenceManager.getDefaultSharedPreferences(this)
     }
-//забирает данные из фрагмента( если мы передаем )
+
+    private fun getSelectedTheme():Int{
+        return if (defPref.getString("theme_key","peach")=="peach") {
+            R.style.Theme_FirstApp
+        } else{ R.style.Theme_FirstAppGreen }
+    }
+
+    //забирает данные из фрагмента( если мы передаем )
     private fun getNote(){
         val sNote = intent.getSerializableExtra(NoteFragment.NEW_NOTE_KEY)
         sNote?.let {
@@ -91,7 +108,7 @@ class NewNoteActivity : AppCompatActivity() {
     var boldStyle:StyleSpan? = null
 
     if(styles.isNotEmpty()){
-   edDescription.setText(oldText)
+        edDescription.text.removeSpan(styles[0])
     }
     else{
         boldStyle = StyleSpan(Typeface.BOLD)
@@ -106,17 +123,17 @@ class NewNoteActivity : AppCompatActivity() {
     private fun setColorForSelectedText(colorId:Int) =with(bind){
         val startPosition = edDescription.selectionStart
         val endPosition = edDescription.selectionEnd
-        val oldText = edDescription.text.toString()
         val styles = edDescription.text.getSpans(startPosition,endPosition,ForegroundColorSpan::class.java)
-        var boldStyle:StyleSpan? = null
 
-        if(styles.isNotEmpty()) edDescription.text.removeSpan(styles[0])
 
-        edDescription.text.setSpan(ForegroundColorSpan(
-            ContextCompat.getColor(this@NewNoteActivity,colorId)),
-            startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        edDescription.text.trim()
-        edDescription.setSelection(startPosition)
+        if(styles.isNotEmpty()){ edDescription.text.removeSpan(styles[0])}
+
+            edDescription.text.setSpan(ForegroundColorSpan(
+                ContextCompat.getColor(this@NewNoteActivity,colorId)),
+                startPosition,endPosition,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            edDescription.text.trim()
+            edDescription.setSelection(startPosition)
+
     }
 
 //обработчик нажатий colorPicker
@@ -173,15 +190,10 @@ class NewNoteActivity : AppCompatActivity() {
             null,
             bind.edTitle.text.toString(),
             HtmlManager.toHtml(bind.edDescription.text),
-            getCurrentTime(),
+           TimeMeneger.getCurrentTime(),
             ""
 
         )
-    }
-//считывает время и дату
-    private fun getCurrentTime(): String{
-        val formatter = SimpleDateFormat("hh:mm:ss - yyyy/MM/dd", Locale.getDefault())
-        return formatter.format(Calendar.getInstance().time)
     }
 
 //кнопка назад
@@ -215,5 +227,14 @@ class NewNoteActivity : AppCompatActivity() {
 
         })
         bind.colorPicker.startAnimation(openAnim)
+    }
+
+    private fun setTextSize()= with(bind){
+        edTitle.setTextSize(pref?.getString("title_size_key","16"))
+        edDescription.setTextSize(pref?.getString("content_size_key","14"))
+    }
+
+    private fun EditText.setTextSize(size:String?){
+        if(size != null) this.textSize = size.toFloat()
     }
 }

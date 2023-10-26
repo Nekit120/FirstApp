@@ -2,6 +2,7 @@ package com.example.firstapp.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.icu.text.CaseMap.Title
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +13,10 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.firstapp.R
 import com.example.firstapp.activities.MainApp
 import com.example.firstapp.activities.NewNoteActivity
@@ -27,8 +31,9 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
     private lateinit var bind: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
     private lateinit var adapter: NoteAdapter
+    private lateinit var defPref: SharedPreferences
 
-//Создание бд
+//Объясвление ViewModel
     private val mainViewModel : MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
@@ -60,9 +65,16 @@ class NoteFragment : BaseFragment(),NoteAdapter.Listener {
 
 //инициализация RcView
     private fun initRcView() = with(bind){
-     rcViewNote.layoutManager = LinearLayoutManager(activity)
-        adapter = NoteAdapter(listener = this@NoteFragment)
+        defPref = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }!!
+        rcViewNote.layoutManager = getLayoutManager()
+        adapter = NoteAdapter(listener = this@NoteFragment,defPref,mainViewModel,this@NoteFragment)
         rcViewNote.adapter=adapter
+    }
+
+    private fun getLayoutManager(): RecyclerView.LayoutManager{
+        return if (defPref.getString("note_style_key","Linear")== "Linear"){
+            LinearLayoutManager(activity)
+        } else { StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)}
     }
 
 //постоянно смотрит на изменения ( LiveData )
